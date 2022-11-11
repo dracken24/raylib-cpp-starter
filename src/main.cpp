@@ -1,29 +1,88 @@
-#include <raylib-cpp.hpp>
+#include "../myIncludes/class2D/player.hpp"
+#include "../myIncludes/class2D/menu.hpp"
+// #include "../myIncludes/class2D/props.hpp"
+#include "../myIncludes/game.hpp"
 
-int main() {
-    
-    // Initialization
-    int screenWidth = 800;
-    int screenHeight = 450;
+//**************************************************************************************************//
+//																									//
+//**************************************************************************************************//
 
-    raylib::Color textColor(LIGHTGRAY);
-    raylib::Window w(screenWidth, screenHeight, "Raylib C++ Starter Kit Example");
-    
-    SetTargetFPS(60);
+void ftChooseMode(Menu *menu)
+{
+	static int ct;
 
-    // Main game loop
-    while (!w.ShouldClose()) // Detect window close button or ESC key
-    {
-        // Update
+	if (!ct)
+		ct = 1;
 
-        // TODO: Update your variables here
+	if (IsKeyPressed(KEY_W))
+		ct--;
+	else if (IsKeyPressed(KEY_S))
+		ct++;
+	if (ct > 2)
+		ct = 1;
+	else if (ct < 1)
+		ct = 2;
 
-        // Draw
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        textColor.DrawText("Congrats! You created your first window!", 190, 200, 20);
-        EndDrawing();
-    }
+	if (IsKeyPressed(KEY_ENTER))
+	{
+		if (ct == 1)
+			menu->ftChangeStart(9);
+		else if (ct == 2)
+			menu->ftChangeStart(8);
+	}
 
-    return 0;
+	if (ct == 1)
+	{
+		DrawText("<---*", 750, 360, 20, DARKGRAY);
+	}
+	else if (ct == 2)
+	{
+		DrawText("<---*", 750, 410, 20, DARKGRAY);
+	}
+}
+
+void	ftBigMenuControl(Menu *menu)
+{
+	DrawText("Welcome to NadEngine", 535, 250, 40, BLACK);
+	DrawText("2D Engine ", 535, 350, 30, DARKGRAY);
+	DrawText("3D Engine ", 535, 400, 30, DARKGRAY);
+
+	ftChooseMode(menu);
+}
+
+int main(void)
+{
+	Game	Game;
+	Menu	menu;
+
+	Game.font1 = LoadFontEx("../fonts/Greenscr.ttf", 32, 0, 250);
+
+	InitWindow(Game.screenWidth, Game.screenHeight, "BANKAI");
+	SetTargetFPS(60);
+	while (!WindowShouldClose())
+	{
+		BeginDrawing();
+		ClearBackground(LIGHTGRAY);
+		if (menu.ftReturnStart() == 10) // Control menu
+		{
+			ftBigMenuControl(&menu);
+		}
+		if (menu.ftReturnStart() == 9) // 2D Mode
+		{
+			EndDrawing();
+			menu.ftChangeStart(0);
+			ftMode2D(&Game, &menu);
+			menu.ftChangeStart(10);
+		}
+		if (menu.ftReturnStart() == 8) // 3D Mode
+		{
+			EndDrawing();
+			ftMode3D(&Game);
+			menu.ftChangeStart(10);
+		}
+		EndDrawing();
+	}
+
+	CloseWindow();
+	return 0;
 }
