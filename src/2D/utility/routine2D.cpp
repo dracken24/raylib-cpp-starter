@@ -9,7 +9,6 @@ void ftRoutine(Game *Game, Player *player, Camera2D *camera, Props *blocks, EnvI
 	static int cameraOption = 0;
 
 	int envItemsLength = envItems->ftReturnEnviAllNbr();
-	std::cout << envItemsLength << std::endl;
 	lastAction = player->ftReturnCt();
 	if (Game->ct_action >= 60 || lastAction != player->ftReturnCt())
 		Game->ct_action = 0;

@@ -62,9 +62,9 @@ void	ftChooseMenu(Menu *menu);
 void	ftMode2D(Game *Game, Menu *menu);
 /**----------------------->> Control Panel <<-----------------------**/
 
-// void	ftSideMenu2D(Game *Game, Player *player, Menu *menu);
-void	ftSideUpMenu2D(Game *Game, Player *player, Menu *menu);
 void	ftSideDownMenu2D(Game *Game, Player *player, Menu *menu);
+void	ftSideUpMenu2D(Game *Game, Player *player, Menu *menu);
+void	ftUpMenu2D(Game *Game, Player *player, Menu *menu);
 void	ftDrawBoarders(Game *Game);
 
 /**----------------------------> Game <-----------------------------**/
