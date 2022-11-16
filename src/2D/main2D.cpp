@@ -31,11 +31,18 @@ void	ftMode2D(Game *game, Menu *menu)
 	Player	*player;
 	player = new Player;
 	player->ftSetPosition((Vector2){500, 300});
+	player->ftInitVarChar();
 
 	Props	*blocks;
-	EnvItems *envItems;
 	blocks = new Props;
+
+	EnvItems *envItems;
 	envItems = new EnvItems;
+
+	game->imgCercleChrom = LoadImage("./imgs/wheelcolor.png");
+	game->textCercleChrom = LoadTexture("./imgs/wheelcolor.png");
+	game->rectCercleChrom = {0, 0, 150, 150};
+
 	ftInitBlocks(blocks, envItems);
 
 	//--------------------------------------------------------------------------------------//
@@ -59,6 +66,7 @@ void	ftMode2D(Game *game, Menu *menu)
 	allCameras->camera01.camera.zoom = 1.0f;
 	allCameras->camera01.textForCam = LoadRenderTexture(300, game->screenHeight / 3);
 	allCameras->camera01.rectForCam = {0.0f, 0.0f, (float)allCameras->camera01.textForCam.texture.width, (float)-allCameras->camera01.textForCam.texture.height};
+	// allCameras->camera01.image = LoadImage();
 
 	// Camera panel side down
 	allCameras->camera02.camera = {0};
@@ -180,7 +188,7 @@ void	ftMode2D(Game *game, Menu *menu)
 			ClearBackground(DARKGRAY);
 			BeginMode2D(allCameras->camera01.camera);
 
-				ftSideUpMenu2D(game, player, menu);
+				ftSideUpMenu2D(game, player, menu, allCameras);
 
 			EndMode2D();
 		EndTextureMode();
@@ -259,7 +267,7 @@ void	ftControlItems(Game *game, Player *player, EnvItems *envItems, Props *block
 		DrawLineEx({posPly.x, posPly.y - 1}, {posPly.x, posPly.y + posPly.height + 7}, 2, RED); // Left
 		posPly.x += posPly.width + 6;
 		DrawLineEx({posPly.x, posPly.y - 1}, {posPly.x, posPly.y + posPly.height + 7}, 2, RED); // Right
-		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && game->mouse.pos.x < game->screenWidth - 300 && game->mouse.pos.y > 40)
 		{
 			player->ftMovePosition(-forMove.x / game->mouse.camZoom, -forMove.y / game->mouse.camZoom);
 		}
@@ -279,7 +287,7 @@ void	ftControlItems(Game *game, Player *player, EnvItems *envItems, Props *block
 		DrawLineEx({posBlock.x, posBlock.y - 1}, {posBlock.x, posBlock.y + posBlock.height + 7}, 2, RED); // Left
 		posBlock.x += posBlock.width + 6;
 		DrawLineEx({posBlock.x, posBlock.y - 1}, {posBlock.x, posBlock.y + posBlock.height + 7}, 2, RED); // Right
-		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && game->mouse.pos.x < game->screenWidth - 300 && game->mouse.pos.y > 40)
 		{
 			game->selected2D.prop->ftMovePosition(-forMove.x / game->mouse.camZoom, -forMove.y / game->mouse.camZoom);
 		}
@@ -299,7 +307,7 @@ void	ftControlItems(Game *game, Player *player, EnvItems *envItems, Props *block
 		DrawLineEx({posWalkable.x, posWalkable.y - 1}, {posWalkable.x, posWalkable.y + posWalkable.height + 7}, 2, RED); // Left
 		posWalkable.x += posWalkable.width + 6;
 		DrawLineEx({posWalkable.x, posWalkable.y - 1}, {posWalkable.x, posWalkable.y + posWalkable.height + 7}, 2, RED); // Right
-		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && game->mouse.pos.x < game->screenWidth - 300 && game->mouse.pos.y > 40)
 		{
 			game->selected2D.item->rect.x += (-(int)(forMove.x / game->mouse.camZoom));
 			game->selected2D.item->rect.y += (-(int)(forMove.y / game->mouse.camZoom));
@@ -347,9 +355,5 @@ void	ftUpMenu2D(Game *Game, Camera2D *camera, EnvItems *play, EnvItems *stop)
 
 void	ftSideDownMenu2D(Game *Game, Player *player, Menu *menu)
 {
-	// DrawText("Panel Side down", 10, 10, 20, BLACK);
-	// if (Game->selected2D.type != 0) // Draw variables on side right down panel
-	// {
 	ftDrawVarsRiDownPanel(Game);
-	// }
 }

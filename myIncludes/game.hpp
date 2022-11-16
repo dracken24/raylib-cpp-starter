@@ -35,6 +35,7 @@ typedef struct NeedBy2DCam{
 	Camera2D 		camera;
 	RenderTexture 	textForCam;
 	Rectangle		rectForCam;
+	Image			image;
 }	NeedBy2DCam;
 
 typedef struct MultipleCam2D{
@@ -53,14 +54,22 @@ typedef struct MultipleCam2D{
 typedef struct Select
 {
 	int			type = 0;	// Select witch
+	int			lastType = 0;
 	int			nbr = 0;		// Nbr of prop
+	int			selected = 0;
+	int			lastSelected = 0;
+
 	int			lastNbr = 0;
 	bool		resetTxt = false; // If deselect items
 	Player		*player;	// 1
 	SquareProps	*prop;		// 2
 	EnvItem		*item;		// 3
+	Player		*lastPlayer;	// 1
+	SquareProps	*lastProp;		// 2
+	EnvItem		*lastItem;		// 3
 
 	int			letterCount = 0;
+	int			witchBox = 0;
 }	Select;
 
 class Game {
@@ -81,6 +90,11 @@ class Game {
 	Font			font1;
 	Vector2			posCam = {650, 300};
 	Select			selected2D;
+
+	Image			imgCercleChrom;
+	Texture2D		textCercleChrom;
+	Rectangle		rectCercleChrom;
+	bool			colorCt = false;
 
 	// MultipleCam2D	allCameras;
 
@@ -103,7 +117,7 @@ void	ftMode2D(Game *Game, Menu *menu);
 /**----------------------->> Control Panel <<-----------------------**/
 
 void	ftSideDownMenu2D(Game *Game, Player *player, Menu *menu);
-void	ftSideUpMenu2D(Game *Game, Player *player, Menu *menu);
+void	ftSideUpMenu2D(Game *game, Player *player, Menu *menu, MultipleCam2D *allCameras);
 void	ftUpMenu2D(Game *Game, Camera2D *camera, EnvItems *play, EnvItems *stop);
 void	ftSelectItemsTop(Game *game, Camera2D *camera, EnvItems *play, EnvItems *stop);
 void	ftDrawBoarders(Game *Game);

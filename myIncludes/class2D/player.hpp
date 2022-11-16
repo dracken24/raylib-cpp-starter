@@ -13,22 +13,29 @@
 
 typedef struct VarChar
 {
-	char plyPosX[MAX_INPUT_CHAR + 1] = "\0";
-	char plyPosY[MAX_INPUT_CHAR + 1] = "\0";
-	char plyWidth[MAX_INPUT_CHAR + 1] = "\0";
-	char plyHeight[MAX_INPUT_CHAR + 1] = "\0";
-	char collBoxPosX[MAX_INPUT_CHAR + 1] = "\0";
-	char collBoxPosY[MAX_INPUT_CHAR + 1] = "\0";
-	char collBoxWidth[MAX_INPUT_CHAR + 1] = "\0";
-	char collBoxHeight[MAX_INPUT_CHAR + 1] = "\0";
+	char *plyPosX;
+	char *plyPosY;
+	char *plyWidth;
+	char *plyHeight;
+	char *collBoxPosX;
+	char *collBoxPosY;
+	char *collBoxWidth;
+	char *collBoxHeight;
 	int	nbr = 8;
 }	VarChar;
+
+typedef struct SelectionBoxPly
+{
+	char	buffer[MAX_INPUT_CHAR + 1] = "\0";
+	int		selectBoxNbr = 0;
+}	SelectionBoxPly;
 
 typedef struct VarsSideDownPanel
 {
 	Rectangle	_playerBox;
 	Rectangle	collisionBox;
 	VarChar		varChar;
+	Color		pixColor;
 }	VarsSideDownPanel;
 
 class Player
@@ -42,6 +49,10 @@ class Player
 		void		ftInitImgsIchigo(void);
 		void		ftInitImgsMeliodas(void);
 		void		ftSetPosition(Vector2 pos);
+
+		void		ftInitVarChar(void);
+		void		ftDeleteVarChar(void);
+		SelectionBoxPly		*ftSelectionBoxPly(void);
 
 		Player		*ftReturnPlayer(void);
 		VarChar		*ftReturnVarsChar(void);
@@ -181,6 +192,7 @@ class Player
 		Player		*_player;
 
 		VarsSideDownPanel	_varsSideDownPanel;
+		SelectionBoxPly		_selectionBox;
 };
 
 #endif

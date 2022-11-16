@@ -2,15 +2,16 @@
 # define SQUAREPROPS_HPP
 
 #include "../../vendor/raylib/src/raylib.h"
+#include <stdlib.h>
 
 #define MAX_INPUT_CHAR 12
 
 typedef struct VarCharPr
 {
-	char propPosX[MAX_INPUT_CHAR + 1] = "\0";
-	char propPosY[MAX_INPUT_CHAR + 1] = "\0";
-	char propWidth[MAX_INPUT_CHAR + 1] = "\0";
-	char propHeight[MAX_INPUT_CHAR + 1] = "\0";
+	char *propPosX;
+	char *propPosY;
+	char *propWidth;
+	char *propHeight;
 	int	nbr = 0;
 }	VarCharPr;
 
@@ -18,6 +19,7 @@ typedef struct VarsSideDownPanelPr
 {
 	Rectangle   		rect;
 	VarCharPr		varCharPr;
+	Color			pixColor;
 }	VarsSideDownPanelPr;
 
 class SquareProps
@@ -32,6 +34,10 @@ class SquareProps
 		Color		ftReturnRecColor(void) const;
 
 		VarCharPr	*ftReturnVarsProp(void);
+		void		ftInitVars(void);
+		void		ftDeleteVars(void);
+
+		void 		ftChangeWorH(float size, char c);
 
 		Vector2		*ftReturnPositionPtr(void) ;
 		float		ftReturnSpeed(void) const;
@@ -52,6 +58,10 @@ class SquareProps
 
 		float		ftReturnSqurtPos(char c) const;
 		SquareProps *ftReturnCopySquareProp(void);
+
+		Color	 	ftReturnColorPix(void);
+		void	 	ftInitColorPix(Color color);
+		void	 	ftInitColor(Color color);
 
 	private:
 		// EnvItem		_envItem;

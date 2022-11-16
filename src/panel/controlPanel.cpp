@@ -100,26 +100,53 @@ void	ftMouseControl(Game *Game)
 		framesCounter++;
 
 	// Draw on screen
-	textBox1 = {125, 36, 100, 20};
-	DrawText("Blocks Rotation:", 10, 40, 14, LIGHTGRAY);
-	DrawRectangleRec(textBox1, LIGHTGRAY);
-	if (mouseOnText)
-		DrawRectangleLines((int)textBox1.x, (int)textBox1.y, (int)textBox1.width, (int)textBox1.height, RED);
-	else
-		DrawRectangleLines((int)textBox1.x, (int)textBox1.y, (int)textBox1.width, (int)textBox1.height, LIGHTGRAY);
-	DrawText(Game->rotation, (int)textBox1.x + 5 , (int)textBox1.y + 4, 14, MAROON);
-	if (mouseOnText)
-	{
-		if (letterCount < MAX_INPUT_CHARS)
-		{
-			// Draw blinking underscore char
-			if (((framesCounter / 20) % 2) == 0)
-				DrawText("_", (int)textBox1.x + MeasureText(Game->rotation, 14), (int)textBox1.y + 12, 14, MAROON);
-		}
-	}
+	// textBox1 = {125, 36, 100, 20};
+	// DrawText("Blocks Rotation:", 10, 40, 14, LIGHTGRAY);
+	// DrawRectangleRec(textBox1, LIGHTGRAY);
+	// if (mouseOnText)
+	// 	DrawRectangleLines((int)textBox1.x, (int)textBox1.y, (int)textBox1.width, (int)textBox1.height, RED);
+	// else
+	// 	DrawRectangleLines((int)textBox1.x, (int)textBox1.y, (int)textBox1.width, (int)textBox1.height, LIGHTGRAY);
+	// DrawText(Game->rotation, (int)textBox1.x + 5 , (int)textBox1.y + 4, 14, MAROON);
+	// if (mouseOnText)
+	// {
+	// 	if (letterCount < MAX_INPUT_CHARS)
+	// 	{
+	// 		// Draw blinking underscore char
+	// 		if (((framesCounter / 20) % 2) == 0)
+	// 			DrawText("_", (int)textBox1.x + MeasureText(Game->rotation, 14), (int)textBox1.y + 12, 14, MAROON);
+	// 	}
+	// }
 }
 
-void	ftSideUpMenu2D(Game *Game, Player *player, Menu *menu)
+void	ftSideUpMenu2D(Game *game, Player *player, Menu *menu, MultipleCam2D *allCameras)
 {
-	ftMouseControl(Game);
+	Vector2 mousePos = GetMousePosition();
+
+	if (game->selected2D.type == 2) // prop
+	{
+		DrawTextureRec(game->textCercleChrom, game->rectCercleChrom, {130, 100}, WHITE);
+		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		{
+			if (game->colorCt == false)
+				game->colorCt = true;
+			else
+			{
+				Color *colors = LoadImageColors(game->imgCercleChrom);
+				int index = ((mousePos.y - 140) * game->imgCercleChrom.height) + mousePos.x - 1330;
+				Color pixel = colors[index];
+				game->selected2D.prop->ftInitColor(pixel);
+			}
+		}
+		DrawRectangle(38, 143, 68, 68, BLACK);
+		DrawRectangle(40, 145, 64, 64, game->selected2D.prop->ftReturnRecColor());
+	}
+	else if (game->selected2D.type == 3) // item
+	{
+		DrawRectangle(38, 143, 68, 68, BLACK);
+		DrawRectangle(40, 145, 64, 64, game->selected2D.item->color);
+		// ImageDrawRectangle(&game->imgCercleChrom, 130, 100, 100, 100, WHITE);
+		// DrawTextureRec(game->textCercleChrom, game->rectCercleChrom, {130, 100}, WHITE);
+	}
+	ftMouseControl(game);
 }

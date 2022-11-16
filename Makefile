@@ -17,6 +17,7 @@ objects := $(patsubst src/%, $(buildDir)/%, $(patsubst %.cpp, %.o, $(sources)))
 depends := $(patsubst %.o, %.d, $(objects))
 compileFlags := -std=c++17 -I include
 linkFlags = -L lib/$(platform) -l raylib
+# linkFlags = ./libraylib.a
 
 # Check for Windows
 ifeq ($(OS), Windows_NT)

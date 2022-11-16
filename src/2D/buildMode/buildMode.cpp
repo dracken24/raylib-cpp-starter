@@ -1,56 +1,87 @@
 #include "../../../myIncludes/game.hpp"
 
+//*** If not selected, select item on build mode ***//
 void ftSelectItems(Game *game, Player *player, Camera2D *camera, EnvItems *envItems, Props *blocks)
 {
 	Vector2 mousePos = game->mouse.pos;
 	Vector2 rayPos = GetScreenToWorld2D(mousePos, *camera);
 	bool	touch = 0;
+	Color	color;
 
 	rayPos.y -= 40;
 
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && game->mouse.pos.x < game->screenWidth - 300 && game->mouse.pos.y > 40)
 	{
 		game->selected2D.lastNbr = game->selected2D.nbr;
-		for (int i = 1; i < envItems->ftReturnEnviAllNbr(); i++)
-		{
+		for (int i = 1; i < envItems->ftReturnEnviAllNbr(); i++) // items
+		{ 
 			Rectangle item = envItems->ftReturnRectangle(i);
 			if (CheckCollisionPointRec(rayPos, item))
 			{
+				game->selected2D.lastType = game->selected2D.type;
+				game->selected2D.lastItem = game->selected2D.item;
+				game->selected2D.lastNbr = game->selected2D.nbr;
 				game->selected2D.type = 3;
 				game->selected2D.nbr = i;
 				game->selected2D.item = envItems->ftReturnEnvitemPtr(i);
 				// std::cout << "Hit Envi: " << i << std::endl;
+				// game->selected2D.item->color = GetImageColor(game->imgCercleChrom,mousePos.x, mousePos.y);
+				game->colorCt = false;
 				touch = 1;
 			}
 		}
-		for (int i = 0; i < blocks->ftReturnNbr(); i++)
+		for (int i = 0; i < blocks->ftReturnNbr(); i++) 		// props
 		{
 			Rectangle item = blocks->ftReturnRectangleSqPr(i);
 			if (CheckCollisionPointRec(rayPos, item))
 			{
+				game->selected2D.lastType = game->selected2D.type;
+				game->selected2D.lastProp = game->selected2D.prop;
+				game->selected2D.lastNbr = game->selected2D.nbr;
 				game->selected2D.type = 2;
 				game->selected2D.nbr = i;
 				game->selected2D.prop = blocks->ftReturnSquareProp(i);
-				std::cout << "Hit Blocks: " << i << std::endl;
+				// std::cout << "Hit Blocks: " << i << std::endl;
+				// color = GetImageColor(game->imgCercleChrom, mousePos.x, mousePos.y);
+				// game->selected2D.prop->ftInitColorPix(color);
+				game->colorCt = false;
 				touch = 1;
 			}
 		}
 		Rectangle	ply = player->ftReturnRectangleCollBox();
-		if (CheckCollisionPointRec(rayPos, ply))
+		if (CheckCollisionPointRec(rayPos, ply))				// player
 		{
+			game->selected2D.lastType = game->selected2D.type;
+			game->selected2D.lastPlayer = game->selected2D.player;
+			game->selected2D.lastNbr = game->selected2D.nbr;
 			game->selected2D.type = 1;
 			game->selected2D.nbr = 0;
 			game->selected2D.player = player->ftReturnPlayer();
 			// std::cout << "Hit Player: " << std::endl;
+			game->colorCt = false;
 			touch = 1;
 		}
 		if (touch == 0) // Not select or deselect item
 		{
-			game->selected2D.type = 0;
+			game->selected2D.lastType = game->selected2D.type;
+			game->selected2D.lastNbr = game->selected2D.nbr;
+			game->selected2D.type = -1;
+			game->selected2D.nbr = -1;
+			game->colorCt = false;
 		}
+		// std::cout << "Mouse" << std::endl;
 	}
+	// else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	// {
+	// 	game->colorCt = false;
+	// }
+	// if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+	// {
+	// 	color = GetImageColor(game->imgCercleChrom,mousePos.x, mousePos.y);
+	// }
 }
 
+//*** Move screen when mouse middle button is pressed, on build mode ***//
 void ftMoveScreen(Game *game, Camera2D *camera)
 {
 	Vector2 mousePos = GetMousePosition();
@@ -70,6 +101,7 @@ void ftMoveScreen(Game *game, Camera2D *camera)
 	game->mouse.camZoom = camera->zoom;
 }
 
+//*** Main fonction for build mode ***//
 void ftRunBuildMode(Game *game, Player *player, EnvItems *envItems, Props *blocks, Camera2D *camera)
 {
 	ftMoveScreen(game, camera);
@@ -78,6 +110,7 @@ void ftRunBuildMode(Game *game, Player *player, EnvItems *envItems, Props *block
 	ftSelectItems(game, player, camera, envItems, blocks);
 }
 
+//*** Draw all item on screen in buils mode, player included ***//
 void ftDrawAll(Game * oldGame, Player * _player, EnvItems * _envItems, Props * _blocks)
 {
 	for (int i = 0; i < _envItems->ftReturnEnviAllNbr(); i++)

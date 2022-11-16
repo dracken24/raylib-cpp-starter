@@ -10,6 +10,22 @@ SquareProps::~SquareProps(void)
 	return ;
 }
 
+void		SquareProps::ftInitVars(void)
+{
+	this->_varCharPr.varCharPr.propPosX = (char *)calloc(sizeof(char), 9);
+	this->_varCharPr.varCharPr.propPosY = (char *)calloc(sizeof(char), 9);
+	this->_varCharPr.varCharPr.propWidth = (char *)calloc(sizeof(char), 9);
+	this->_varCharPr.varCharPr.propHeight = (char *)calloc(sizeof(char), 9);
+}
+
+void SquareProps::ftDeleteVars(void)
+{
+	free(this->_varCharPr.varCharPr.propPosX);
+	free(this->_varCharPr.varCharPr.propPosY);
+	free(this->_varCharPr.varCharPr.propWidth);
+	free(this->_varCharPr.varCharPr.propHeight);
+}
+
 SquareProps	*SquareProps::ftReturnCopySquareProp(void)
 {
 	SquareProps *ret = new SquareProps;
@@ -32,6 +48,14 @@ void	SquareProps::ftInitSquareprops(Vector2 pos, Vector2 size, Color color, bool
 	this->blocking = blocking;
 }
 
+void		SquareProps::ftChangeWorH(float size, char c)
+{
+	if (c == 'W')
+		this->_varCharPr.rect.width = size;
+	if (c == 'H')
+		this->_varCharPr.rect.height = size;
+}
+
 VarCharPr	*SquareProps::ftReturnVarsProp(void)
 {
 	return (&this->_varCharPr.varCharPr);
@@ -42,7 +66,22 @@ Rectangle	SquareProps::ftReturnRectangle(void) const
 	return (this->_varCharPr.rect);
 }
 
-Color	SquareProps::ftReturnRecColor(void) const
+Color	SquareProps::ftReturnColorPix(void)
+{
+	return (this->_varCharPr.pixColor);
+}
+
+void	SquareProps::ftInitColorPix(Color color)
+{
+	this->_varCharPr.pixColor = color;
+}
+
+void	SquareProps::ftInitColor(Color color)
+{
+	this->color = color;
+}
+
+Color SquareProps::ftReturnRecColor(void) const
 {
 	return (this->color);
 }
