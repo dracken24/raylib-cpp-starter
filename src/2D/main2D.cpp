@@ -122,7 +122,7 @@ void	ftMode2D(Game *game, Menu *menu)
 	// Multiple camera
 	// void (*cameraUpdaters[])(Camera2D *, Player *, EnvItem *, int, float, int, int) = {
 	// 	ftUpdateCameraCenter};
-	game->cameraUpdaters[0] = {ftUpdateCameraCenter}; 
+	game->cameraUpdaters[0] = {ftUpdateCameraCenter};
 
 //--------------------------------------------------------------------------------------//
 	// buttons top
